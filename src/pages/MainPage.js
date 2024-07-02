@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchRule from "../components/BusnessRuleDisplay/SearchRule";
 import Popup from "../components/CreateRule/CreateRules";
 import { Dropdown, Menu } from "antd";
@@ -17,6 +17,24 @@ const items = [
 function MainPage() {
   const [showPopup, setShowPopup] = useState(false);
   const [loadings, setLoadings] = useState([]);
+  const [rules, setRules] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRules = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/list_rule/");
+        const data = await response.json();
+        setRules(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching rules:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchRules();
+  }, []);
 
   const enterLoading = (index) => {
     setLoadings((state) => {
@@ -102,156 +120,62 @@ function MainPage() {
                     Description
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Created
+                    Condition
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Last Updated
+                    Action
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    <div className="flex items-center mb-4">
-                      <input
-                        id="default-checkbox"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                    </div>
-                  </th>
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    Loan Approval Rules
-                  </th>
-                  <td className="px-6 py-4">
-                    Criteria and rules for approving loan applications
-                  </td>
-                  <td className="px-6 py-4">2024-01-15</td>
-                  <td className="px-6 py-4 relative">
-                    2024-05-10
-                    <Dropdown
-                      overlay={<Menu items={items} />}
-                      trigger={['click']}
-                    >
-                      <button type="button" className="absolute right-0 p-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
+                  {rules.map((rule) => (
+                    <tr key={rule.id} className="bg-white border-b">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        <div className="flex items-center mb-4">
+                          <input
+                            id="default-checkbox"
+                            type="checkbox"
+                            value=""
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                           />
-                        </svg>
-                      </button>
-                    </Dropdown>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    <div className="flex items-center mb-4">
-                      <input
-                        id="default-checkbox"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                    </div>
-                  </th>
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    Loan Approval Rules
-                  </th>
-                  <td className="px-6 py-4">
-                    Criteria and rules for approving loan applications
-                  </td>
-                  <td className="px-6 py-4">2024-01-15</td>
-                  <td className="px-6 py-4 relative">
-                    2024-05-10
-                    <Dropdown
-                      overlay={<Menu items={items} />}
-                      trigger={['click']}
-                    >
-                      <button type="button" className="absolute right-0 p-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
+                        </div>
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        {rule.ruleName}
+                      </th>
+                      <td className="px-6 py-4">{rule.description}</td>
+                      <td className="px-6 py-4">{rule.condition}</td>
+                      <td className="px-6 py-4 relative">
+                        {rule.action}
+                        <Dropdown
+                          overlay={<Menu items={items} />}
+                          trigger={["click"]}
                         >
-                          <path
-                            fillRule="evenodd"
-                            d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </Dropdown>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    <div className="flex items-center mb-4">
-                      <input
-                        id="default-checkbox"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                    </div>
-                  </th>
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    Loan Approval Rules
-                  </th>
-                  <td className="px-6 py-4">
-                    Criteria and rules for approving loan applications
-                  </td>
-                  <td className="px-6 py-4">2024-01-15</td>
-                  <td className="px-6 py-4 relative">
-                    2024-05-10
-                    <Dropdown
-                      overlay={<Menu items={items} />}
-                      trigger={['click']}
-                    >
-                      <button type="button" className="absolute right-0 p-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </Dropdown>
-                  </td>
-                </tr>
-              </tbody>
+                          <button type="button" className="absolute right-0 p-2">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </button>
+                        </Dropdown>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
             </table>
           </div>
         </div>
