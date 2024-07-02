@@ -1,18 +1,45 @@
-// src/pages/MainPage.js
-import React, {useState} from "react";
+import React, { useState } from "react";
 import SearchRule from "../components/BusnessRuleDisplay/SearchRule";
 import Popup from "../components/CreateRule/CreateRules";
+import { Dropdown, Menu } from "antd";
+
+const items = [
+  {
+    label: "Delete",
+    key: "1",
+  },
+  {
+    label : "Update",
+    key : "2",
+  }
+];
 
 function MainPage() {
   const [showPopup, setShowPopup] = useState(false);
-  
+  const [loadings, setLoadings] = useState([]);
+
+  const enterLoading = (index) => {
+    setLoadings((state) => {
+      const newLoadings = [...state];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+    setTimeout(() => {
+      setLoadings((state) => {
+        const newLoadings = [...state];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 6000);
+  };
+
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
   return (
     <div className="">
-        <SearchRule />
+      <SearchRule />
       <div className="w-full">
         <div className="content p-4">
           <div className="flex justify-end space-x-4 mt-20">
@@ -47,7 +74,6 @@ function MainPage() {
               >
                 <path d="M14.7 2.3a1 1 0 0 1 1.5 1.4l-1.8 1.8a3 3 0 0 0-3.6 4.5L7 14l-1.7-1.7a1 1 0 1 0-1.4 1.4L6.3 16l-2.6 2.6a1 1 0 0 1-1.4-1.4L4 13.7l1.8 1.8a3 3 0 0 0 4.5-3.6l1.8-1.8A1 1 0 0 1 14.7 2.3zM9.3 7.3a1 1 0 0 1 0-1.4l4.6-4.6a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1-1.4 1.4L12 4.4l-1.3 1.3a1 1 0 0 1-1.4 0L9.3 7.3z" />
               </svg>
-              
               Create Rules
             </button>
           </div>
@@ -60,12 +86,12 @@ function MainPage() {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    <div class="flex items-center mb-4">
+                    <div className="flex items-center mb-4">
                       <input
                         id="default-checkbox"
                         type="checkbox"
                         value=""
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                     </div>
                   </th>
@@ -89,12 +115,12 @@ function MainPage() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <div class="flex items-center mb-4">
+                    <div className="flex items-center mb-4">
                       <input
                         id="default-checkbox"
                         type="checkbox"
                         value=""
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                     </div>
                   </th>
@@ -110,20 +136,25 @@ function MainPage() {
                   <td className="px-6 py-4">2024-01-15</td>
                   <td className="px-6 py-4 relative">
                     2024-05-10
-                    <button type="button" className="absolute right-0 p-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                    <Dropdown
+                      overlay={<Menu items={items} />}
+                      trigger={['click']}
+                    >
+                      <button type="button" className="absolute right-0 p-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </Dropdown>
                   </td>
                 </tr>
                 <tr className="bg-white border-b">
@@ -131,12 +162,12 @@ function MainPage() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <div class="flex items-center mb-4">
+                    <div className="flex items-center mb-4">
                       <input
                         id="default-checkbox"
                         type="checkbox"
                         value=""
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                     </div>
                   </th>
@@ -152,20 +183,25 @@ function MainPage() {
                   <td className="px-6 py-4">2024-01-15</td>
                   <td className="px-6 py-4 relative">
                     2024-05-10
-                    <button type="button" className="absolute right-0 p-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                    <Dropdown
+                      overlay={<Menu items={items} />}
+                      trigger={['click']}
+                    >
+                      <button type="button" className="absolute right-0 p-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </Dropdown>
                   </td>
                 </tr>
                 <tr className="bg-white border-b">
@@ -173,12 +209,12 @@ function MainPage() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <div class="flex items-center mb-4">
+                    <div className="flex items-center mb-4">
                       <input
                         id="default-checkbox"
                         type="checkbox"
                         value=""
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                     </div>
                   </th>
@@ -194,20 +230,25 @@ function MainPage() {
                   <td className="px-6 py-4">2024-01-15</td>
                   <td className="px-6 py-4 relative">
                     2024-05-10
-                    <button type="button" className="absolute right-0 p-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                    <Dropdown
+                      overlay={<Menu items={items} />}
+                      trigger={['click']}
+                    >
+                      <button type="button" className="absolute right-0 p-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M2 9a2 2 0 100-4 2 2 0 000 4zM8 9a2 2 0 100-4 2 2 0 000 4zm6 0a2 2 0 100-4 2 2 0 000 4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </Dropdown>
                   </td>
                 </tr>
               </tbody>
