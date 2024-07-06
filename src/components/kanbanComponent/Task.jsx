@@ -3,7 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 export default function Task({ task, index }){
     return (
-      <Draggable draggableId={task.id} index={index} key={task.id}>
+      <Draggable draggableId={task.id+""} index={index} key={task.id}>
         {(provided,snapshot) => (
           <div
             {...provided.draggableProps}
@@ -17,10 +17,15 @@ export default function Task({ task, index }){
               ...provided.draggableProps.style
             }}
           >
-            {task.content}
+            <ul>
+              <li><b>Rule name</b> :{task.ruleName}</li>
+              <li><b>Description</b> :{task.description}</li>
+              <li><b>Condition</b> :{task.condition}</li>
+            </ul>   
             {provided.placeholder}
           </div>
         )}
       </Draggable>
     );
   };
+

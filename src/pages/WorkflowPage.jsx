@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 
 import ReactFlow, {
+  Background,
   ReactFlowProvider,
   addEdge,
   useNodesState,
@@ -87,6 +88,8 @@ const WorkflowPage = () => {
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
+
+  
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -118,6 +121,15 @@ const WorkflowPage = () => {
     [reactFlowInstance]
   );
 
+
+  const onNodesDelete = useCallback(
+    (deletedNodes) => {
+      setNodes((nds) => nds.filter((node) => !deletedNodes.some((dn) => dn.id === node.id)));
+    },
+    [setNodes]
+  );
+
+
   return (
     <div className="dndflow">
       <ReactFlowProvider>
@@ -132,9 +144,12 @@ const WorkflowPage = () => {
             onInit={setReactFlowInstance}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            onNodesDelete={onNodesDelete}
             fitView
+            onNod
           >
-            <Controls />
+            <Controls  />
+            <Background variant="cross"  gap={12} size={2} />
           </ReactFlow>
         </div>
       </ReactFlowProvider>

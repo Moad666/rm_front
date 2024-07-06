@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { RiDraggable } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 
-
-
-
-const DraggableTable = ({initialData,columns}) => {
-  const [data, setData] = useState(initialData);
-
+const DraggableTable = ({ rows, columns, setdata, setEditRule, setIsEditModalOpen }) => {
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
-    const items = Array.from(data);
+    const items = Array.from(rows);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    setData(items);
+    setdata(items);
+  };
+
+  const modify = (row) => {
+    setEditRule(row);
+    setIsEditModalOpen(true);
   };
 
   return (
@@ -25,25 +25,28 @@ const DraggableTable = ({initialData,columns}) => {
         {(provided) => (
           <table {...provided.droppableProps} ref={provided.innerRef}>
             <thead>
-              <tr style={{backgroundColor:"#f2f4f8"}}>
-                {columns.map(element=><th style={{padding:"1rem",fontSize:"14px"}}>{element.title}</th>)}
+              <tr style={{ backgroundColor: "#f2f4f8" }}>
+                {columns.map(element => <th key={element.dataIndex} style={{ padding: "1rem", fontSize: "14px" }}>{element.title}</th>)}
               </tr>
             </thead>
-            <tbody >
-              {data.map((row, index) => (
-                <Draggable  key={row.n} draggableId={row.n} index={index}>
+            <tbody>
+              {rows.map((row, index) => (
+                <Draggable key={row.id} draggableId={row.id+""} index={index} >
                   {(provided) => (
-                    <tr 
+                    <tr
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                     <td style={{padding:"1rem",fontSize:"14px",backgroundColor:"white"}}><RiDraggable/> </td>
-                      <td style={{padding:"1rem",fontSize:"14px",backgroundColor:"white"}}>{index}</td>
-                      <td style={{padding:"1rem",fontSize:"14px",backgroundColor:"white"}}>{row.rulename}</td>
-                      <td style={{padding:"1rem",fontSize:"14px",backgroundColor:"white"}}>{row.discription}</td>
-                      <td style={{padding:"1rem",fontSize:"14px",backgroundColor:"white"}}>{row.conditions}</td>
-                      <td style={{padding:"1rem",fontSize:"14px",backgroundColor:"white",display:"flex",alignItems:"center",gap:5}}>{row.actions}<FaEdit /></td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}><RiDraggable /></td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{index}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{row.ruleName}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{row.description}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{row.condition}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white", display: "flex", alignItems: "center", gap: 5 }}>
+                        {row.action}
+                        <FaEdit onClick={() => modify(row)} />
+                      </td>
                     </tr>
                   )}
                 </Draggable>
