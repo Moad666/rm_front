@@ -22,16 +22,27 @@ function MainPage() {
   const [editRule, setEditRule] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const [ruleName, setRuleName] = useState('');
+  const [description, setDescription] = useState('');
+  const [condition, setCondition] = useState('');
+  const [action, setAction] = useState('');
+  const [id, setId] = useState('');
+
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
   const handleEditOk = async () => {
     try {
-      console.log(editRule.id)
-      const response = await axios.put(`http://127.0.0.1:8000/api/update_rule/${editRule.id}`, editRule);
+      console.log(editRule)
+      const response = await axios.put(`http://127.0.0.1:8000/api/update_rule/${editRule.id}`, {
+        ruleName : ruleName,
+        description : description,
+        condition, condition,
+        action: action
+      });
       if (response.status === 200) {
-        const updatedData = rules.map(item => item.id === editRule.id ? editRule : item);
+        const updatedData = rules.map(item => item.id === response.data.id? response.data : item);
         setRules(updatedData);
         setEditRule(null);
         setIsEditModalOpen(false);
@@ -144,13 +155,13 @@ function MainPage() {
       <Modal open={isEditModalOpen} onOk={handleEditOk} onCancel={handleEditCancel}>
       
         <p>Rule name</p>
-        <Input value={editRule?.ruleName} onChange={(e) => setEditRule({ ...editRule, ruleName: e.target.value })} />
+        <Input value={ruleName} onChange={(e) => setRuleName( e.target.value )} />
         <p>Description</p>
-        <Input value={editRule?.description} onChange={(e) => setEditRule({ ...editRule, description: e.target.value })} />
+        <Input value={description} onChange={(e) => setDescription(e.target.value)} />
         <p>Condition</p>
-        <Input value={editRule?.condition} onChange={(e) => setEditRule({ ...editRule, condition: e.target.value })} />
+        <Input value={condition} onChange={(e) => setCondition( e.target.value )} />
         <p>Action</p>
-        <Input value={editRule?.action} onChange={(e) => setEditRule({ ...editRule, action: e.target.value })} />
+        <Input value={action} onChange={(e) => setAction(e.target.value )} />
         
       </Modal>
     </div>
