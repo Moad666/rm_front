@@ -23,7 +23,7 @@ function Authentication(){
             localStorage.setItem('token', response.data.token);
             console.log('Login successful:', response.data);
             //NotificationManager.success('Welcome !');
-            navigate('/MainPage/rulekanban');
+            navigate('/MainPage/FileUploader');
         } catch (err) {
             //setError('Login failed. Please check your email and password.');
             //NotificationManager.error('Incorrect Email / Password');   

@@ -213,7 +213,7 @@ export default function KanbanBoard({ rules }) {
         <div style={{display:"flex",gap:10,justifyContent:"end"}}>
 
         <Button >cancel</Button>
-        <Button>precedent</Button>
+        <Button onClick={()=>navigate(-1)}>Precedent</Button>
         <Button type='primary' onClick={()=>{{console.log(data);navigate('/MainPage/Workflowpage',{ state: { data } })}}} >Validate and Procced</Button>
         
 </div>

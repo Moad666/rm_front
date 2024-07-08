@@ -3,7 +3,13 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { IoMdCloudUpload } from "react-icons/io";
 
-const FileUploader = ({ data, setData }) => {
+
+const FileUploader = ({ data, setData,setidupload,info }) => {
+    
+
+
+
+
     const onDrop = useCallback(acceptedFiles => {
         acceptedFiles.forEach(file => {
             const formData = new FormData();
@@ -19,6 +25,9 @@ const FileUploader = ({ data, setData }) => {
                 console.log('File uploaded successfully:', response.data.message);
                 // Ensure that setData correctly updates the state
                 setData(prevData => [...prevData, ...response.data.message]);
+                info();
+               
+                
             })
             .catch(error => {
                 console.error('Error uploading file:', error);
@@ -40,6 +49,7 @@ const FileUploader = ({ data, setData }) => {
                     <p style={{fontSize:"14px",color:"gray"}}>Max 10 MB files are allowed</p>
                 </div>
             )}
+          
         </div>
     );
 };

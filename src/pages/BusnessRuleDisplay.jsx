@@ -54,10 +54,13 @@ export default function BusnessRuleDisplay() {
   const [editRule, setEditRule] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
-  console.log(data);
+  
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+
+
 
   
 
@@ -81,7 +84,13 @@ export default function BusnessRuleDisplay() {
 
   const handleEditOk = async () => {
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/api/update_rule/${editRule.id}`, editRule);
+      console.log(editRule)
+      const response = await axios.put(`http://127.0.0.1:8000/api/update_rule/${editRule.id}`, {
+        "ruleName" : editRule.ruleName+"",
+        "description" : editRule.description+"",
+        "condition" : editRule.condition+"",
+        "action" : editRule.action+""
+      });
       if (response.status === 200) {
         const updatedData = data.map(item => item.id === editRule.id ? editRule : item);
         setData(updatedData);
@@ -133,7 +142,7 @@ export default function BusnessRuleDisplay() {
       </div>
       <div style={{ display: "flex", width: "100%", gap: 10, justifyContent: "end" }}>
         <Button style={{ fontSize: "12px", height: "40px" }}>Cancel</Button>
-        <MyButton2 text="Precedent" />
+        <Button onClick={()=>navigate(-1)}>Precedent</Button>
         <Button type="primary" onClick={nextPage}>Validate and Proceed</Button>
       </div>
 
@@ -149,7 +158,7 @@ export default function BusnessRuleDisplay() {
       </Modal>
       <Modal open={isEditModalOpen} onOk={handleEditOk} onCancel={handleEditCancel}>
         <p>Rule name</p>
-        <Input value={editRule?.ruleName} onChange={(e) => setEditRule({ ...editRule, name: e.target.value })} />
+        <Input value={editRule?.ruleName} onChange={(e) => setEditRule({ ...editRule, ruleName: e.target.value })} />
         <p>Description</p>
         <Input value={editRule?.description} onChange={(e) => setEditRule({ ...editRule, description: e.target.value })} />
         <p>Condition</p>

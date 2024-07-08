@@ -18,7 +18,7 @@ export default function Task({ task, index }){
             }}
           >
             <ul>
-              <li><b>Rule name</b> :{task.name}</li>
+              <li><b>Rule name</b> :{task.ruleName}</li>
               <li><b>Description</b> :{task.description}</li>
               <li><b>Condition</b> :{task.condition}</li>
             </ul>   
