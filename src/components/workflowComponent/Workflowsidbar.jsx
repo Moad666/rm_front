@@ -36,9 +36,9 @@ export default function Workflowsidbar({rules,logicalnodes}) {
 
       {rules.map(element=><div
         className="dndnode"
-        onDragStart={(event) => onDragStart(event, 'default',element.rulename)}
+        onDragStart={(event) => onDragStart(event, 'default',element.name)}
         draggable style={{padding:"1rem",borderRadius:"5px",display:"flex",gap:20}}
-      > <b style={{fontSize:"12px"}}>{element.rulename}</b><RiDraggable/>
+      > <b style={{fontSize:"12px"}}>{element.name}</b><RiDraggable/>
       </div>)}
       
     </aside>

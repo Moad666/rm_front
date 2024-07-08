@@ -12,7 +12,7 @@ const generateUniqueId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 
 export default function KanbanBoard({ rules }) {
     const navigate=useNavigate()
-    const [data,setdata]=useState(rules)
+    const [data,setdata]=useState([...rules])
     const [categories, setCategories] = useState([{ id: generateUniqueId(), title: "Default", rules }]);
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -214,7 +214,7 @@ export default function KanbanBoard({ rules }) {
 
         <Button >cancel</Button>
         <Button>precedent</Button>
-        <Button type='primary' onClick={()=>{{console.log(data);navigate('/MainPage/Workflowpage')}}} >Validate and Procced</Button>
+        <Button type='primary' onClick={()=>{{console.log(data);navigate('/MainPage/Workflowpage',{ state: { data } })}}} >Validate and Procced</Button>
         
 </div>
         </div>

@@ -8,6 +8,7 @@ import ReactFlow, {
   useEdgesState,
   Controls,
 } from 'reactflow';
+import { useLocation } from 'react-router-dom';
 import 'reactflow/dist/style.css';
 
 import Workflowsidbar from '../components/workflowComponent/Workflowsidbar';
@@ -73,6 +74,12 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const WorkflowPage = () => {
+
+  
+  const location = useLocation();
+  const rules = location.state?.data || [];
+  console.log(rules)
+
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -133,7 +140,7 @@ const WorkflowPage = () => {
   return (
     <div className="dndflow">
       <ReactFlowProvider>
-        <Workflowsidbar  rules={data} logicalnodes={logicalnodes}/>
+        <Workflowsidbar  rules={rules} logicalnodes={logicalnodes}/>
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}

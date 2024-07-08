@@ -26,7 +26,7 @@ const DraggableTable = ({ rows, columns, setdata, setEditRule, setIsEditModalOpe
           <table {...provided.droppableProps} ref={provided.innerRef}>
             <thead>
               <tr style={{ backgroundColor: "#f2f4f8" }}>
-                {columns.map(element => <th key={element.dataIndex} style={{ padding: "1rem", fontSize: "14px" }}>{element.title}</th>)}
+                {columns.map(element => <th key={element.dataIndex} style={{ padding: "1rem", fontSize: "14px" ,border:"1px 0px 1px 0px solid gainsboro"}}>{element.title}</th>)}
               </tr>
             </thead>
             <tbody>
@@ -38,14 +38,14 @@ const DraggableTable = ({ rows, columns, setdata, setEditRule, setIsEditModalOpe
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}><RiDraggable /></td>
-                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{index}</td>
-                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{row.ruleName}</td>
-                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{row.description}</td>
-                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" }}>{row.condition}</td>
-                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white", display: "flex", alignItems: "center", gap: 5 }}>
-                        {row.action}
-                        <FaEdit onClick={() => modify(row)} />
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white",border:"1px 0px 1px 0px solid gainsboro"}}><RiDraggable /></td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" ,border:"1px solid gainsboro"}}>{index}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" ,border:"1px solid gainsboro"}}>{row.ruleName}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" ,border:"1px solid gainsboro"}}>{row.description}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white" ,border:"1px solid gainsboro"}}>{row.condition}</td>
+                      <td style={{ padding: "1rem", fontSize: "14px", backgroundColor: "white", display: "flex", alignItems: "center", gap: 5 ,border:"1px solid gainsboro"}}>
+                        <div style={{whidth:"80%"}}>{row.action}</div>
+                        <div><FaEdit  onClick={() => modify(row)} /></div>
                       </td>
                     </tr>
                   )}

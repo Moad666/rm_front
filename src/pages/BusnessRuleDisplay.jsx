@@ -5,6 +5,7 @@ import axios from 'axios';
 import SearchRule from "../components/BusnessRuleDisplay/SearchRule";
 import MyButton2 from "../components/BusnessRuleDisplay/Mybotton2";
 import DraggableTable from "../components/draggabletable/TableDraggable";
+import { useLocation } from 'react-router-dom';
 
 export default function BusnessRuleDisplay() {
   const navigate = useNavigate();
@@ -42,30 +43,23 @@ export default function BusnessRuleDisplay() {
     },
   ];
 
-  const [data, setData] = useState([]);
+  
+  const location = useLocation();
+  const rules = location.state?.rules || [];
+  
+
+  const [data, setData] = useState([...rules]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rule, setRule] = useState({ ruleName: "", description: "", condition: "", action: "" });
   const [editRule, setEditRule] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+  
+  console.log(data);
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/list_rule/');
-        if (response.status === 200) {
-          console.log(response.data);
-          setData(response.data);
-        }
-      } catch (error) {
-        console.error("There was an error fetching the rules!", error);
-      }
-    };
-    fetchData();
-  }, []);
+  
 
   const handleOk = async () => {
     try {
@@ -73,7 +67,7 @@ export default function BusnessRuleDisplay() {
       if (response.status === 201) {
         
         setData([...data, { ...response.data, n: (data.length + 1).toString() }]);
-        setRule({ ruleName: "", description: "", condition: "", action: "" });
+        setRule({ ruleName: "", description: "", condition: "", action: "" ,id_upload:""});
         setIsModalOpen(false);
       }
     } catch (error) {
@@ -145,7 +139,7 @@ export default function BusnessRuleDisplay() {
 
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <p>Rule name</p>
-        <Input value={rule.ruleName} onChange={(e) => setRule({ ...rule, ruleName: e.target.value })} />
+        <Input value={rule.ruleName} onChange={(e) => setRule({ ...rule, name: e.target.value })} />
         <p>Description</p>
         <Input value={rule.description} onChange={(e) => setRule({ ...rule, description: e.target.value })} />
         <p>Condition</p>
@@ -155,7 +149,7 @@ export default function BusnessRuleDisplay() {
       </Modal>
       <Modal open={isEditModalOpen} onOk={handleEditOk} onCancel={handleEditCancel}>
         <p>Rule name</p>
-        <Input value={editRule?.ruleName} onChange={(e) => setEditRule({ ...editRule, ruleName: e.target.value })} />
+        <Input value={editRule?.ruleName} onChange={(e) => setEditRule({ ...editRule, name: e.target.value })} />
         <p>Description</p>
         <Input value={editRule?.description} onChange={(e) => setEditRule({ ...editRule, description: e.target.value })} />
         <p>Condition</p>
